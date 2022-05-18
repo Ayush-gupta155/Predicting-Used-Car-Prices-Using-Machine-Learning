@@ -10,4 +10,3 @@ numpy==1.22.3
 pickle-mixin==1.0.2
 lightgbm
 threadpoolctl==2.1.0
-json==2.0.9
