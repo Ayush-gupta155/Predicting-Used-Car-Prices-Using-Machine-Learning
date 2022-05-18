@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block tabs %}
+
+<li><a href="{{ url_for('index') }}" title="Contact Us">Home</a></li>
+<li><a href="{{ url_for('about') }}" title="About Us">About</a></li>
+<li><a href="{{ url_for('contact') }}" title="Contact Us">Contact Us</a></li>
+<li class="active dropdown">
+	<a href="{{ url_for('register') }}" title="Home" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">Register</a>
+	<i class="ddl-switch fa fa-angle-down"></i>
+</li>
+<li><a href="{{ url_for('login') }}" title="Contact Us">Login</a></li>
+
+{% endblock tabs %}
+
+{% block content %}
+
+			<!-- Checkout -->
+			<div class="container-fluid no-left-padding no-right-padding woocommerce-checkout">
+				<!-- Container -->
+				<div class="container">
+					<!-- Billing -->
+					<div class="checkout-form">
+						<form>
+                            <style>
+                              form  {   display:inline-block;text-align: center;width: 50%;margin-left : 25% }
+                                label { display: table-cell; }
+                                input { display: table-cell; }
+                                div{align-items: center;}
+                            </style>
+							<div class="col-md-20 col-sm-26 col-xs-12">
+								<h3>Sign up</h3>
+								<div class="billing-field">
+                                    <div class="col-md-12 form-group">
+										<label  >Full name*</label>
+                                        <p></p>
+										<input name = "Name" type = "text"placeholder="Full name">
+									</div>
+									<div class="col-md-12 form-group">
+										<label  >Email *</label>
+                                        <p></p>
+										<input name = "email" type = "text"placeholder="E-Mail address">
+									</div>
+									<div class="col-md-12 form-group">
+										<label>Password * </label>
+                                        <p></p>
+                                        <input name = "new password" type = "password"placeholder="new password">
+									</div>
+                                    <div class="col-md-12 form-group">
+										<label>Confirm Password * </label>
+                                        <p></p>
+                                        <input name = "confirm password" type = "password"placeholder="confirm password">
+									</div>
+									<div class="place-order">
+										<input value="Sign up" type="submit">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div><!-- Billing /- -->
+				</div><!-- Container /- -->
+			</div><!-- Checkout /- -->
+			<!-- ABOUT US /- -->
+
+{% endblock content %}

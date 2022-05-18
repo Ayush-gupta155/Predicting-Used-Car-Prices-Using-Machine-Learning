@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block tabs %}
+
+<li><a href="{{ url_for('index') }}" title="Contact Us">Home</a></li>
+<li><a href="{{ url_for('about') }}" title="About Us">About</a></li>
+<li><a href="{{ url_for('contact') }}" title="Contact Us">Contact Us</a></li>
+<li><a href="{{ url_for('register') }}" title="Contact Us">Register</a></li>
+
+<li class="active dropdown">
+	<a href="{{ url_for('login') }}" title="Home" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">Login</a>
+	<i class="ddl-switch fa fa-angle-down"></i>
+</li>
+
+{% endblock tabs %}
+
+{% block content %}
+
+			<!-- Checkout -->
+			<div class="container-fluid no-left-padding no-right-padding woocommerce-checkout">
+				<!-- Container -->
+				<div class="container">
+					<!-- Billing -->
+					<div class="checkout-form">
+						<form>
+                            <style>
+                              form  {   display:inline-block;text-align: center;width: 50%;margin-left : 25% }
+                                label { display: table-cell; }
+                                input { display: table-cell; }
+                                div{align-items: center;}
+                            </style>
+							<div class="col-md-20 col-sm-26 col-xs-12">
+								<h3>Sign in</h3>
+								<div class="billing-field">
+									<div class="col-md-12 form-group">
+										<label  >Email *</label>
+                                        <p></p>
+										<input name = "email" type = "text"placeholder="E-Mail address">
+									</div>
+									<div class="col-md-12 form-group">
+										<label>Password * </label>
+                                        <p></p>
+                                        <input name = "password" type = "password"placeholder="password">
+									</div>
+									<div class="place-order">
+										<input value="Sign in" type="submit">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div><!-- Billing /- -->
+				</div><!-- Container /- -->
+			</div><!-- Checkout /- -->
+			<!-- ABOUT US /- -->
+			<div class="container-fluid no-left-padding no-right-padding ">
+
+{% endblock content %}

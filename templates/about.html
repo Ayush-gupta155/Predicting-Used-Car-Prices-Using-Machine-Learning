@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block tabs %}
+
+<li><a href="{{ url_for('index') }}" title="About Us">Home</a></li>
+<li class="active dropdown">
+	<a href="{{ url_for('about') }}" title="Home" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">About</a>
+	<i class="ddl-switch fa fa-angle-down"></i>
+</li>
+<li><a href="{{ url_for('contact') }}" title="Contact Us">Contact Us</a></li>
+<li><a href="{{ url_for('register') }}" title="Contact Us">Register</a></li>
+<li><a href="{{ url_for('login') }}" title="Contact Us">Login</a></li>
+
+{% endblock tabs %}
+
+
+{% block content %}
+			<!-- About Section -->
+			<div class="about-section container-fluid no-padding">
+				<!-- Container -->
+				<div class="container">
+					<!-- Section Header -->
+					<div class="section-header">
+						<h3>About Know your Car</h3>
+						<p>OUR VISION IS TO MAKE THE SELLING AND PURCHASE PROCESS EASY AND EFFICIENT</p>
+						<img src="img_cars.jpeg" alt="section-seprator" />
+					</div><!-- Section Header /- -->
+				
+					<div class="col-md-6 col-sm-6 col-xs-6">
+						<div class="about-content">
+							<h5>When you use <span>Know your car </span> you can trust the predicted prices.</h5>
+							<p>We are a non-profit organization that offer the help in the selling and purchase process.We specify the price of your dream car with your own preferences.</p>
+							<ul>
+								<li>We Provide trusted prices</li>
+								<li> Our prices always up to date </li>
+								<li>Our website for all people </li>
+							</ul>
+						</div>
+					</div>
+				</div><!-- Container /- -->
+			</div><!-- About Section /- -->
+
+{% endblock content %}

@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block tabs %}
+
+<li class="active dropdown">
+	<a href="{{ url_for('index') }}" title="Home" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">Home</a>
+	<i class="ddl-switch fa fa-angle-down"></i>
+</li>
+<li><a href="{{ url_for('about') }}" title="About Us">About</a></li>
+<li><a href="{{ url_for('contact') }}" title="Contact Us">Contact Us</a></li>
+<li><a href="{{ url_for('register') }}" title="Contact Us">Register</a></li>
+<li><a href="{{ url_for('login') }}" title="Contact Us">Login</a></li>
+
+{% endblock tabs %}
+
+
+{% block content %}
+
+			<!-- form -->
+			<div class="container-fluid no-left-padding no-right-padding woocommerce-checkout">
+				<!-- Container -->
+				<div class="container">
+					<!-- specifications -->
+					<div class="checkout-form">
+						<form action="/getprice" method="POST">
+							<div class="col-md-20 col-sm-26 col-xs-12">
+								<h3>car specifications</h3>
+								<div class="billing-field">
+									<div class="col-md-12 form-group">
+										<label>City *</label>
+										<div class="select">
+											<select class="form-control" name="city-name">
+												{% for city in cities %}
+												<option>{{ city }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-md-12 form-group">
+										<label>State</label>
+										<div class="select">
+											<select class="form-control" name="state-name">
+												{% for state in states %}
+												<option>{{ state }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-md-12 form-group">
+										<label>brand</label>
+										<div class="select">
+											<select class="form-control" name="make-name">
+												{% for make in makes %}
+												<option>{{ make }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-md-12 form-group">
+										<label>model</label>
+										<div class="select">
+											<select class="form-control" name="model-name">
+												{% for model in models %}
+												<option>{{ model }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-md-12 form-group">
+										<label>purchase year *</label>
+										<input class="form-control" placeholder="the year you purchased the car" type="number" name="purchase-year">
+									</div>
+									<div class="col-md-12 form-group">
+										<label>Mileage *</label>
+										<input class="form-control" placeholder="the number of miles travelled or covered" type="number" name="mileage">
+									</div>
+									<div class="place-order">
+										<input value="GET ESTIMATE PRICE" type="submit">
+									</div>
+									<div class="col-md-12 form-group"></div>
+									{% if price %}
+									<nav class="ow-pagination">
+										<ul class="pager">
+											<li class="load-more"><a href="#">${{ price }}</a></li>
+										</ul>
+									</nav>				
+									{% endif %}
+								</div>
+							</div>
+						</form>
+					</div><!-- specifications /- -->
+				</div><!-- Container /- -->
+			</div><!-- form /- -->
+
+{% endblock content %}
+
