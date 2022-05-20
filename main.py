@@ -1,77 +1,33 @@
-from flask import Flask, render_template, redirect, url_for, request
-# ------------------------------------------------- #
-#            MAPPING FUNCTIONS                      #
-# ------------------------------------------------- #
-def Car_age (value):
-    return(2022 - value)
-
-def Old_or_New (value):
-    if value < 15:
-        return('New')
-    else:
-        return('Old')
-
-def Car_Usage_level(value):
-    if value>=5000:
-        return('Highly Driven')
-    elif 1000<=value<5000:
-        return('Moderately Driven')
-    else:
-        return('Less Driven')
-
-def State_level(value):
-    if value>=100000:
-        return('High')
-    elif 50000<=value<100000:
-        return('Moderate')
-    else:
-        return('Less')
-
-def City_level(value):
-    if value>=10000:
-        return('High')
-    elif 1000<=value<10000:
-        return('Moderate')
-    else:
-        return('Less')
-
+from flask import Flask, render_template, redirect, url_for, request, jsonify
 import pickle
 import json
 import numpy as np
 from lightgbm import LGBMRegressor
+from transformation_functions import *
+
+
 
 app = Flask(__name__)
 
 price = None
-states = ['Texas','New York','Colorado','Utah','Florida','Connecticut','Idaho','North Dakota'
-        ,'California','New Jersey','Ohio','Virginia','Indiana','Arizona','Oregon','Kansas'
-        ,'Nebraska','Massachusetts','Maryland','Georgia','Minnesota','Hawaii','Louisiana'
-        ,'New Mexico','Illinois','Alabama','Pennsylvania','South Carolina','North Carolina'
-        ,'Washington','Wisconsin','Oklahoma','Kentucky','Mississippi','Missouri','Maine'
-        ,'Arkansas','Michigan','Nevada','Tennessee','Florida','New Hampshire','Delaware'
-        ,'West Virginia','Arizona','Vermont','South Dakota','Iowa','Rhode Island','Georgia'
-        ,'Ohio','Montana','District of Columbia','Alaska','Virginia','Wyoming','Maryland'
-        ,'California','Georgia']
 
-makes = ['Acura', 'Alfa', 'AM', 'Aston', 'Audi', 'Bentley', 'BMW', 'Buick', 'Cadillac',
- 'Chevrolet', 'Chrysler', 'Dodge', 'Ferrari' ,'FIAT', 'Fisker' ,'Ford',
- 'Freightliner', 'Genesis', 'Geo' ,'GMC' ,'Honda', 'HUMMER', 'Hyundai',
- 'INFINITI' ,'Isuzu' ,'Jaguar', 'Jeep' ,'Kia' ,'Lamborghini', 'Land', 'Lexus',
- 'Lincoln' ,'Lotus' ,'Maserati' ,'Maybach' ,'Mazda', 'McLaren', 'Mercedes-Benz',
- 'Mercury' ,'MINI', 'Mitsubishi' ,'Nissan' ,'Oldsmobile', 'Plymouth', 'Pontiac',
- 'Porsche' ,'Ram' ,'Rolls-Royce' ,'Saab', 'Saturn' ,'Scion' ,'smart', 'Subaru',
- 'Suzuki', 'Tesla' ,'Toyota', 'Volkswagen' ,'Volvo']
-models_file = open('models.txt', 'r')
-models = sorted(models_file.read().split(', '))
-models_file.close()
-cities_file = open('cities.txt', 'r')
-cities = sorted(cities_file.read().split(', '))
-cities_file.close()
-
-# Opening JSON file
+# Opening JSON files
 f = open('feature-transformation-data.json')
 maps_dict = json.load(f)
 f.close()
+
+f = open('models_to_makes.json')
+models_to_makes = json.load(f)
+f.close()
+
+f = open('cities_to_states.json')
+cities_to_states = json.load(f)
+f.close()
+
+states = sorted(list(cities_to_states.keys()))
+makes = sorted(list(models_to_makes.keys()))
+cities = sorted(list(cities_to_states[states[0]]))
+models = sorted(list(models_to_makes[makes[0]]))
 
 # load the model from disk
 ml_model = pickle.load(open('lgb', 'rb'))
@@ -114,10 +70,13 @@ def index():
 def getPrice():
     city = request.form.get('city-name')
     state = request.form.get('state-name')
-    purchase_year = int(request.form.get('purchase-year'))
-    mileage = int(request.form.get('mileage'))
     make = request.form.get('make-name')
     model = request.form.get('model-name')
+    try:
+        purchase_year = int(request.form.get('purchase-year'))
+        mileage = int(request.form.get('mileage'))
+    except ValueError:
+        redirect(url_for('index'))
 
     sample = transform_features(city=city, state=state, year=purchase_year, mileage=mileage, make=make, model=model)
     print(sample)
@@ -135,8 +94,16 @@ def contact():
 
 @app.route('/login')
 def login():
-    return render_template("sign_in.html")
+    return render_template("Sign_in.html")
 
 @app.route('/register')
 def register():
     return render_template("sign_up.html")
+
+@app.route('/city/<state>')
+def city(state):
+    return jsonify({'cities': sorted(list(cities_to_states[state]))})
+
+@app.route('/model/<make>')
+def model(make):
+    return jsonify({'models': sorted(list(models_to_makes[make]))})

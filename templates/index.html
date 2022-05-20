@@ -7,8 +7,6 @@
 </li>
 <li><a href="{{ url_for('about') }}" title="About Us">About</a></li>
 <li><a href="{{ url_for('contact') }}" title="Contact Us">Contact Us</a></li>
-<li><a href="{{ url_for('register') }}" title="Contact Us">Register</a></li>
-<li><a href="{{ url_for('login') }}" title="Contact Us">Login</a></li>
 
 {% endblock tabs %}
 
@@ -21,24 +19,14 @@
 				<div class="container">
 					<!-- specifications -->
 					<div class="checkout-form">
-						<form action="/getprice" method="POST">
+						<form action="/getprice" method="POST" id="specs-form">
 							<div class="col-md-20 col-sm-26 col-xs-12">
 								<h3>car specifications</h3>
 								<div class="billing-field">
 									<div class="col-md-12 form-group">
-										<label>City *</label>
-										<div class="select">
-											<select class="form-control" name="city-name">
-												{% for city in cities %}
-												<option>{{ city }}</option>
-												{% endfor %}
-											</select>
-										</div>
-									</div>
-									<div class="col-md-12 form-group">
 										<label>State</label>
 										<div class="select">
-											<select class="form-control" name="state-name">
+											<select class="form-control" name="state-name" id="states">
 												{% for state in states %}
 												<option>{{ state }}</option>
 												{% endfor %}
@@ -46,9 +34,19 @@
 										</div>
 									</div>
 									<div class="col-md-12 form-group">
+										<label>City *</label>
+										<div class="select">
+											<select class="form-control" name="city-name" id="cities">
+												{% for city in cities %}
+												<option>{{ city }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-md-12 form-group">
 										<label>brand</label>
 										<div class="select">
-											<select class="form-control" name="make-name">
+											<select class="form-control" name="make-name" id="makes">
 												{% for make in makes %}
 												<option>{{ make }}</option>
 												{% endfor %}
@@ -58,7 +56,7 @@
 									<div class="col-md-12 form-group">
 										<label>model</label>
 										<div class="select">
-											<select class="form-control" name="model-name">
+											<select class="form-control" name="model-name" id="models">
 												{% for model in models %}
 												<option>{{ model }}</option>
 												{% endfor %}
@@ -66,12 +64,12 @@
 										</div>
 									</div>
 									<div class="col-md-12 form-group">
-										<label>purchase year *</label>
-										<input class="form-control" placeholder="the year you purchased the car" type="number" name="purchase-year">
+										<label for="validationCustom01">purchase year *</label>
+										<input class="form-control" id="validationCustom01" placeholder="the year you purchased the car" type="number" name="purchase-year" required>
 									</div>
 									<div class="col-md-12 form-group">
-										<label>Mileage *</label>
-										<input class="form-control" placeholder="the number of miles travelled or covered" type="number" name="mileage">
+										<label for="validationCustom01">Mileage *</label>
+										<input class="form-control" id="validationCustom01" placeholder="the number of miles travelled or covered" type="number" name="mileage" required>
 									</div>
 									<div class="place-order">
 										<input value="GET ESTIMATE PRICE" type="submit">
@@ -93,3 +91,42 @@
 
 {% endblock content %}
 
+{% block script %}
+<script>
+	let state_select = document.getElementById("states")
+	let city_select = document.getElementById("cities")
+	let make_select = document.getElementById("makes")
+	let model_select = document.getElementById("models")
+
+	state_select.onchange = function(){
+		state = state_select.value;
+
+		fetch('/city/' + state).then(function(response){
+			response.json().then(function(data){
+				optionHTML = '';
+				for (let city of data.cities){
+					optionHTML += '<option>' + city + '</option>'
+				}
+
+				city_select.innerHTML = optionHTML;
+			});
+		});
+	}
+
+	make_select.onchange = function(){
+		make = make_select.value;
+
+		fetch('/model/' + make).then(function(response){
+			response.json().then(function(data){
+				optionHTML = '';
+				for (let model of data.models){
+					optionHTML += '<option>' + model + '</option>'
+				}
+
+				model_select.innerHTML = optionHTML;
+			});
+		});
+	}
+</script>
+
+{% endblock script %}
